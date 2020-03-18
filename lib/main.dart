@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  String barcode;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,6 +17,7 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.pinkAccent,
             bottom: TabBar(
+              isScrollable: true,
               tabs: <Widget>[
                 Tab(text: 'M'),
                 Tab(text: 'T'),
@@ -28,13 +32,41 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              Capsule(),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_car),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
+              ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, index){
+                    return Capsule('Sucrolose', TimeOfDay.now());
+                  }),
             ],
           ),
           backgroundColor: Color(0xFF4b4b4b),
@@ -124,6 +156,12 @@ class CustomTile extends StatelessWidget {
 }
 
 class Capsule extends StatelessWidget {
+
+  String MedName;
+  TimeOfDay Time;
+
+  Capsule(this.MedName, this.Time);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -149,9 +187,9 @@ class Capsule extends StatelessWidget {
                   Column(
                     children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        'Medicine Name',
+                        '$MedName',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -160,7 +198,7 @@ class Capsule extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10, bottom: 10),
                       child: Text(
-                        'Timing',
+                        '$Time',
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -189,3 +227,5 @@ class Capsule extends StatelessWidget {
     );
   }
 }
+
+
