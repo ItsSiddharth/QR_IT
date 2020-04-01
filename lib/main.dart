@@ -1,13 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   String barcode;
+  String medicine ='';
+  String data = '';
+  String monday = '';
+
+
+  @override
+  void initState(){
+    super.initState();
+    initializeApp();
+  }
+  void initializeApp() async{
+    http.Response response =await http.get('http://192.168.43.129:5000/get_data/animisha/monday');
+    data = response.body;
+
+//    medicine = data['medicine_name'];
+  }
+  int no_of_medicines(String example){
+    Map<String, dynamic> user = jsonDecode(data);
+    return user["1"]['number_of_medicines'];
+  }
+  List Medcines(String example){
+    List medicines = [];
+    Map<String, dynamic> user = jsonDecode(data);
+    for (var i =0; i<user["1"]['number_of_medicines'];i++ ){
+      medicines.add(user["1"]["medicine_name"]["$i"]);
+    }
+    return medicines;
+  }
+  List Timings(String example){
+    List timings = [];
+    Map<String, dynamic> user = jsonDecode(data);
+    for (var i =0; i<user["1"]['number_of_medicines'];i++ ){
+      timings.add(user["1"]["timing"]["$i"]);
+    }
+    return timings;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,39 +76,40 @@ class MyApp extends StatelessWidget {
           body: TabBarView(
             children: <Widget>[
               ListView.builder(
-                  itemCount: 7,
+//                  itemCount: no_of_medicines(monday),
+              itemCount: no_of_medicines('data') ,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule(Medcines('data')[index], Timings('data')[index]);
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test1');
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test2');
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test3');
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test4');
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test5');
                   }),
               ListView.builder(
                   itemCount: 7,
                   itemBuilder: (context, index){
-                    return Capsule('Sucrolose', TimeOfDay.now());
+                    return Capsule('Sucrolose', 'Test6');
                   }),
             ],
           ),
@@ -77,30 +121,30 @@ class MyApp extends StatelessWidget {
                 DrawerHeader(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                    colors: <Color>[Colors.pinkAccent, Colors.pink],
-                  )),
+                        colors: <Color>[Colors.pinkAccent, Colors.pink],
+                      )),
                   child: Center(
                       child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Patient Name',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Patient Name',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text(
+                              'Patient ID',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Patient ID',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
+                      )),
                 ),
                 CustomTile(Icons.add, 'Scan', () => {}),
                 CustomTile(Icons.local_hospital, 'Database', () => {}),
@@ -113,6 +157,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 class CustomTile extends StatelessWidget {
   IconData icon;
@@ -158,7 +203,7 @@ class CustomTile extends StatelessWidget {
 class Capsule extends StatelessWidget {
 
   String MedName;
-  TimeOfDay Time;
+  String Time;
 
   Capsule(this.MedName, this.Time);
 
