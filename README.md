@@ -2,4 +2,4 @@
 
 ## Demo
 
-<img src="./assets/demo.gif" width="400" height="600" title="demo">
+<img src="./assets/demo.gif" width="300" height="600" title="demo">
